@@ -37,6 +37,11 @@ class VoiceAssistant:
         except:
             print("Erreur de son")  
     
+    def speak(self, text):
+        print(f"Assistant: {text}")
+        self.engine.say(text)
+        self.engine.runAndWait()
+    
     def listen_for_command(self):
         try:
             print("En train d'écouter...")
@@ -64,11 +69,6 @@ class VoiceAssistant:
         except Exception as e:
             print(f"Erreur d'enregistrement audio: {e}")
             return None
-    
-    def speak(self, text):
-        print(f"Assistant: {text}")
-        self.engine.say(text)
-        self.engine.runAndWait()
     
     def execute_action(self, action):
         action = action.strip()
@@ -108,7 +108,7 @@ class VoiceAssistant:
                 print(f"Action détectée: {action}")
                 self.execute_action(action)
             else:
-                 self.speak("Oui, je vous écoute. Que puis-je faire pour vous?")
+                self.speak("Oui, je vous écoute. Que puis-je faire pour vous?")
     
     def run(self):
         """Boucle principale de l'assistant"""
