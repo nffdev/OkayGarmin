@@ -64,6 +64,11 @@ class VoiceAssistant:
         except Exception as e:
             print(f"Erreur d'enregistrement audio: {e}")
             return None
+    
+    def speak(self, text):
+        print(f"Assistant: {text}")
+        self.engine.say(text)
+        self.engine.runAndWait()
 
 def main():
     try:
