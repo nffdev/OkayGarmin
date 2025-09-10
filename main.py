@@ -69,6 +69,46 @@ class VoiceAssistant:
         print(f"Assistant: {text}")
         self.engine.say(text)
         self.engine.runAndWait()
+    
+    def execute_action(self, action):
+        action = action.strip()
+        
+        if "bloc notes" in action or "notepad" in action:
+            try:
+                subprocess.Popen(["notepad.exe"])
+                self.speak("J'ouvre le bloc-notes")
+            except Exception as e:
+                self.speak("Désolé, je n'ai pas pu ouvrir le bloc-notes")
+                print(f"Erreur: {e}")
+        
+        elif "calculatrice" in action or "calc" in action:
+            try:
+                subprocess.Popen(["calc.exe"])
+                self.speak("J'ouvre la calculatrice")
+            except Exception as e:
+                self.speak("Désolé, je n'ai pas pu ouvrir la calculatrice")
+                print(f"Erreur: {e}")
+        
+        elif "heure" in action or "temps" in action:
+            current_time = datetime.now().strftime("%H heures %M")
+            self.speak(f"Il est {current_time}")
+        
+        elif "arrête" in action or "stop" in action or "quitte" in action:
+            self.speak("Au revoir!")
+            self.listening = False
+        
+        else:
+            self.speak("Désolé, je n'ai pas compris cette commande")
+            print(f"Commande non reconnue: {action}")
+    
+    def process_command(self, full_command):
+        if self.wake_word in full_command:
+            action = full_command.replace(self.wake_word, "").strip()
+            if action:
+                print(f"Action détectée: {action}")
+                self.execute_action(action)
+            else:
+                self.speak("Oui, je vous écoute. Que puis-je faire pour vous?")
 
 def main():
     try:
