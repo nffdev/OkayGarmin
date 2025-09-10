@@ -108,12 +108,40 @@ class VoiceAssistant:
                 print(f"Action détectée: {action}")
                 self.execute_action(action)
             else:
-                self.speak("Oui, je vous écoute. Que puis-je faire pour vous?")
+                 self.speak("Oui, je vous écoute. Que puis-je faire pour vous?")
+    
+    def run(self):
+        """Boucle principale de l'assistant"""
+        print("Assistant vocal démarré. Parlez maintenant...")
+        
+        while self.listening:
+            try:
+                command = self.listen_for_command()
+                
+                if command:
+                    print(f"Commande entendue: {command}")
+                    
+                    if self.wake_word in command:
+                        print(f"Ok garmin '{self.wake_word}' détecté!")
+                        
+                        threading.Thread(target=self.play_beep, daemon=True).start()
+                        
+                        self.process_command(command)
+                
+                time.sleep(0.1)
+                
+            except KeyboardInterrupt:
+                print("\nArrêt demandé par l'utilisateur")
+                self.speak("Au revoir!")
+                break
+            except Exception as e:
+                print(f"Erreur inattendue: {e}")
+                time.sleep(1)
 
 def main():
     try:
         assistant = VoiceAssistant()
-        print("Assistant vocal initialisé avec succès.")
+        assistant.run()
     except Exception as e:
         print(f"Erreur lors du démarrage: {e}")
 
